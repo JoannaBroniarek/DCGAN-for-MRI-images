@@ -232,25 +232,40 @@ def discriminator2d(input_shape=(64, 64, 75),
 ##############################
 ####        Losses        ####
 ##############################
-# Label smoothing -- technique from GAN hacks, instead of assigning 1/0 as class labels, we assign a random integer in range [0.7, 1.0] for positive class
-# and [0.0, 0.3] for negative class
+
+
+
+# Label smoothing technique:
 
 def smooth_positive_labels(y):
+    """
+    Instead of 1 for a positive class it assigns a random integer in range (0.7, 1)
+    """
     return y - 0.3 + (np.random.random(y.shape) * 0.5)
 
 def smooth_negative_labels(y):
+    """
+    Instead of 0 for a negative class it assigns a random integer in range (0, 0.3)
+    """
     return y + np.random.random(y.shape) * 0.3
 
-# randomly flip some labels
+
+# Random flippling of some labels:
+
 def noisy_labels(y, p_flip):
-    # determine the number of labels to flip
-    n_select = int(p_flip * int(y.shape[0]))
-    # choose labels to flip
-    flip_ix = np.random.choice([i for i in range(int(y.shape[0]))], size=n_select)
+    """ 
+    Add some noise to labels by flipping randomly selected ones.
+    
+    Parameters:
+    -----------
+    y : {array-like} - Labels
+    p_flip : {float} - Probability of flipping
+    
+    """
+    n_selected = int(p_flip * int(y.shape[0]))
+    flip_ix = np.random.choice([i for i in range(int(y.shape[0]))], size=n_selected)
     
     op_list = []
-    # invert the labels in place
-    #y_np[flip_ix] = 1 - y_np[flip_ix]
     for i in range(int(y.shape[0])):
         if i in flip_ix:
             op_list.append(tf.subtract(1, y[i]))
@@ -261,12 +276,14 @@ def noisy_labels(y, p_flip):
     return outputs
 
 
-# def generator_loss(fake_output):
-#     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-#     return cross_entropy(tf.ones_like(fake_output), fake_output)
-
 def generator_loss(fake_output, apply_label_smoothing=True):
+    """
+    Generator Loss measures how well it was able to cheat on the discriminator.
+    Uses the Cross Entropy Loss.
     
+    apply_label_smoothing : {boolen} - Determines if to apply the label smoothing.
+    
+    """
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     
     if apply_label_smoothing:
@@ -276,17 +293,17 @@ def generator_loss(fake_output, apply_label_smoothing=True):
     else:
         return cross_entropy(tf.ones_like(fake_output), fake_output)
 
-
-# def discriminator_loss(real_output, fake_output):
-#     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-#     real_loss = cross_entropy(tf.ones_like(real_output), real_output)
-#     fake_loss = cross_entropy(tf.zeros_like(fake_output), fake_output)
-#     total_loss = real_loss + fake_loss
-#     return total_loss
-
+    
 
 def discriminator_loss(real_output, fake_output, apply_label_smoothing=True, label_noise=True):
+    """
+    Discriminator Loss measures how well the discriminator was able to distinguish real and fake images.
+    Uses the Cross Entropy Loss.
     
+    apply_label_smoothing : {boolen} - Determines if to apply the label smoothing.
+    label_noise : {boolean} - Determines if to add some noise to labels 
+    
+    """
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     
     if label_noise and apply_label_smoothing:
