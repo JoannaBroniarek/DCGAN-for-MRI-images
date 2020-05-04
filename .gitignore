@@ -116,3 +116,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+Results_and_graphs_of_training.ipynb
