@@ -4,6 +4,10 @@ Inspiration for this project was the paper: http://www.nlab.ci.i.u-tokyo.ac.jp/p
 
 The idea was to implement and train DCGAN model on the 3D MRI images from  BRATS 2019 dataset.  
 
+# Demo
+
+To see a short explanation of the implementation as well as to generate new images, please see the [demo notebook](demo.ipynb) 
+
 ## Repository Content
 
 * **train3D.py** -  the file to be run (with training functions and 'main' function)
@@ -18,10 +22,10 @@ The idea was to implement and train DCGAN model on the 3D MRI images from  BRATS
 ```
 $ python3 train3D.py
 	--epochs 100
-    --batch_size 16
-    --lr_g 5e-4
-    --lr_d 5e-5
-    --rand_seed 42
+	--batch_size 16
+	--lr_g 5e-4
+	--lr_d 5e-5
+	--rand_seed 42
 ```
 
 
@@ -30,30 +34,12 @@ $ python3 train3D.py
 
 <img src="docs/mri.gif" style="zoom:80%;" />
 
------------------
-
-### Problems encountered while training and used GAN tricks
-
-* Discriminator was decreasing to zero values after few epochs
-
-* Exploding Losses
-
-* Memory issues (tfRecords, BufferSize)
-
-  
-
-In order to improve the performance and make the training more stable, the following tricks were used:
-
-* Batch Normalization
-* Weight Initializer from Truncated Normal distribution
-* tuning of the initial learning rates
-* Decaying learning rates (ExponentialDecay) 
-* trying different Activation functions
-
 
 
 ------------------------
 
-### Requirements
+### To Do:
 
-TODO : add info about library versions
+* requirements txt
+* pre-trained model upload
+
