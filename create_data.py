@@ -15,7 +15,7 @@ import PIL
 import time
 
 
-def load_img(file_path, subject_id):
+def load_img(file_path, subject_id=None):
     """ 
     Loads and preprocesses the traning image.
     Preprocessing: 
@@ -25,8 +25,11 @@ def load_img(file_path, subject_id):
     """
     
     #  Construct a file path to read an image from.
-    t1_img = os.path.join(file_path, '{}/{}_t1.nii.gz'.format(subject_id, subject_id))
-
+    if subject_id is not None:
+        t1_img = os.path.join(file_path, '{}/{}_t1.nii.gz'.format(subject_id, subject_id))
+    else:
+        t1_img = file_path
+        
     # Read the .nii image containing a brain volume with SimpleITK and get 
     # the numpy array:
     sitk_t1 = sitk.ReadImage(t1_img)

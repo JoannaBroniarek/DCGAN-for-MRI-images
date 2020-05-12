@@ -37,4 +37,56 @@ def gen_and_save_images(model, epoch, test_noise, save_dir_path, gen_loss, disc_
         plt.show()
     
     plt.close()
+
     
+def generate_image(model, test_noise, save=False, save_dir_path=None, show=False):
+    """
+    Generates new synthetic images for a given noise vector.
+    This function is used out of training.
+    
+    Parameters:
+    ----------
+    model - the pretrained generator model
+    test_noise - the noise vector
+    save - : {boolean} - If True, it saves the images to the specified by 'save_dir_path' folder. 
+    save_dir_path - The output path for images
+    show : {boolean} - If True, it plots the images immediately 
+    
+    """
+        
+    preds = model(test_noise, training=False)
+    fig = plt.figure(figsize=(12, 10))
+    fig.suptitle("An example sequence of synthetic images", fontsize=14)
+
+    for ind, i in enumerate(list(range(7, 70, 4))):
+        plt.subplot(4, 4, ind+1)
+        plt.title(str(i))
+        plt.imshow(preds[0][i,:,:,0], cmap='gray')
+        plt.axis('off')
+    
+    if save:
+        save_dir_path = os.path.join(save_dir_path, "images")
+        if not os.path.exists(save_dir_path):
+            os.mkdir(save_dir_path)
+            
+        plt.savefig(
+            os.path.join(save_dir_path, 'example.png'), bbox_inches='tight')
+    
+    if show:
+        plt.show()
+    
+    plt.close()
+    
+
+def plot_image_seq(img):
+    """ 
+    Plot an example of a sequence of the original images 
+    """
+    fig = plt.figure(figsize=(12, 10))
+    fig.suptitle("An example sequence of the original images", fontsize=14)
+
+    for ind, i in enumerate(list(range(7, 70, 4))):
+        plt.subplot(4, 4, ind+1)
+        plt.title(str(i))
+        plt.imshow(img[:,:, i], cmap='gray')
+        plt.axis('off')

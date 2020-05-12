@@ -20,7 +20,6 @@ from tensorflow.keras import Sequential
 ####        Generator & Discriminator        ####
 #################################################
 
-
 def generator3d(img_shape=(75, 64, 64, 1),
                 noise_shape = (100, ),
                 kernel_size = (4, 4, 4),
@@ -85,52 +84,13 @@ def generator3d(img_shape=(75, 64, 64, 1),
                                   padding='same', use_bias=False))
         model.add(BatchNormalization())
         model.add(Activation("relu"))
-        #model.add(LeakyReLU())
 
     ## 4th Convolution Layer
     model.add(Conv3DTranspose(1, kernel_size, strides, 
                             padding='same', use_bias=False))
-#     model.add(Activation("tanh"))
 
     return model
-
-
-
-def generator2d(img_shape=(64, 64, 75),
-                noise_shape = (100, ),
-                kernel_size = (4, 4),
-                strides = (2, 2),
-                upsample_layers = 4,
-                starting_filters = 512):
-    """
-    Generator2D for a Deep Convolutional GAN.
-    """
     
-    filters = starting_filters
-    starting_img_size = img_shape[1] //(2**upsample_layers)
-  
-    model = Sequential()
-    model.add(Dense((starting_img_size ** 2) * starting_filters, 
-                  input_shape=noise_shape, use_bias=False))
-    model.add(BatchNormalization())
-    model.add(Activation("elu"))
-
-    model.add(Reshape((starting_img_size, starting_img_size,filters)))
-
-    ## 3 Hidden Convolution Layers
-    for l in range(upsample_layers-1):
-        filters = int(filters / 2)
-        model.add(Conv2DTranspose(filters, kernel_size, strides,
-                              padding='same', use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation("elu"))
-        #model.add(LeakyReLU())
-  
-    ## 4th Convolution Layer
-    model.add(Conv2DTranspose(img_shape[-1], kernel_size, strides, 
-                            padding='same', use_bias=False))
-    
-
 
 def discriminator3d(input_shape=(75, 64, 64, 1),
                     kernel_size = (4, 4, 4),
@@ -166,7 +126,6 @@ def discriminator3d(input_shape=(75, 64, 64, 1),
     """
     rate = 0.2
     filters = input_shape[1]
-    print('input_shape', input_shape)
     model = Sequential()
 
     model.add(Conv3D(strides=strides,
@@ -193,40 +152,6 @@ def discriminator3d(input_shape=(75, 64, 64, 1),
     model.add(Flatten())
     model.add(Dense(1))
     return model
-
-
-def discriminator2d(input_shape=(64, 64, 75),
-                    kernel_size = (4, 4),
-                    strides = (2, 2),
-                    upsample_layers = 4):
-    """
-    Discriminator2D for a Deep Convolutional GAN.
-    """
-    
-    filters = input_shape[0]
-
-    model = Sequential()
-    model.add(Conv2D(strides=strides,
-                  kernel_size = kernel_size,
-                  filters = filters,
-                  input_shape=input_shape,
-                  padding='same'))
-  
-    model.add(LeakyReLU())
-    model.add(Dropout(0.2))
-
-    for l in range(upsample_layers-1):
-        filters = int(filters * 2)
-        model.add(Conv2D(strides=strides,
-                     kernel_size = kernel_size,
-                     filters = filters,
-                     padding='same'))
-        model.add(LeakyReLU())
-
-    model.add(Flatten())
-    model.add(Dense(1))
-    return model
-
 
 
 ##############################
