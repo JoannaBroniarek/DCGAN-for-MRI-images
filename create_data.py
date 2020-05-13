@@ -1,18 +1,8 @@
 import SimpleITK as sitk
 import os
 import tensorflow as tf
-import pandas as pd
 import cv2
 from tqdm import tqdm
-
-from matplotlib import pyplot as plt
-from dltk.io.augmentation import *
-from dltk.io.preprocessing import *
-
-import glob
-import imageio
-import PIL
-import time
 
 
 def load_img(file_path, subject_id=None):
@@ -56,6 +46,7 @@ def load_img(file_path, subject_id=None):
 
 ###########  Building the TFRecord file #############
 
+## I copied few functions from the tensoflow tutoral: [https://www.tensorflow.org/tutorials/load_data/tfrecord]
 
 def _float_feature(value):
     """Returns a float_list from a float / double."""

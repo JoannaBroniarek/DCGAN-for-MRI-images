@@ -1,26 +1,13 @@
-import SimpleITK as sitk
 import os
 import tensorflow as tf
-import pandas as pd
-import cv2
-from tqdm import tqdm
-
-from matplotlib import pyplot as plt
-from dltk.io.augmentation import *
-from dltk.io.preprocessing import *
-
-import glob
-import imageio
-import PIL
 import time
+import argparse
 
 from tensorflow.keras.utils import Progbar
 
 from models import *
 from create_data import *
 from utils import *
-
-import argparse
 
 
 def parse_args():

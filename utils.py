@@ -1,6 +1,13 @@
 import os
 from matplotlib import pyplot as plt
 
+import logging
+logging.getLogger('tensorflow').disabled = True
+
+import tensorflow as tf
+tf.get_logger().setLevel('ERROR')
+
+
 def gen_and_save_images(model, epoch, test_noise, save_dir_path, gen_loss, disc_loss, show=False):
     """
     Generates synthetic images while training.
@@ -78,7 +85,7 @@ def generate_image(model, test_noise, save=False, save_dir_path=None, show=False
     plt.close()
     
 
-def plot_image_seq(img):
+def plot_image_seq(img, save=False):
     """ 
     Plot an example of a sequence of the original images 
     """
@@ -90,3 +97,23 @@ def plot_image_seq(img):
         plt.title(str(i))
         plt.imshow(img[:,:, i], cmap='gray')
         plt.axis('off')
+    
+    if save:
+        plt.savefig('docs/example.png', bbox_inches='tight')
+        
+        
+def get_pretrained_model(generator):
+    ''' 
+    Function used in demo to load the pretrained model for a generator.
+    '''
+    save_dir_path = 'logs/2020-05-04_06:40:29/'
+    checkpoint_dir = save_dir_path
+    checkpoint_prefix = os.path.join("training_checkpoints", "ckpt")
+    checkpoint = tf.train.Checkpoint(generator=generator)
+
+    manager = tf.train.CheckpointManager(checkpoint,
+                                      directory=checkpoint_dir,
+                                      max_to_keep = 10,
+                                      checkpoint_name=checkpoint_prefix)
+
+    status = checkpoint.restore(manager.latest_checkpoint)
