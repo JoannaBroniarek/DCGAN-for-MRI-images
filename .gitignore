@@ -1,4 +1,5 @@
-logs/
+
+logs/2020-05-04_06:40:29/training_checkpoints/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

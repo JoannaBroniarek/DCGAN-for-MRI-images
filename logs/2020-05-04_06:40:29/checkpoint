@@ -1,0 +1,12 @@
+model_checkpoint_path: "training_checkpoints/ckpt-5"
+all_model_checkpoint_paths: "training_checkpoints/ckpt-1"
+all_model_checkpoint_paths: "training_checkpoints/ckpt-2"
+all_model_checkpoint_paths: "training_checkpoints/ckpt-3"
+all_model_checkpoint_paths: "training_checkpoints/ckpt-4"
+all_model_checkpoint_paths: "training_checkpoints/ckpt-5"
+all_model_checkpoint_timestamps: 1588576939.232973
+all_model_checkpoint_timestamps: 1588579419.4332035
+all_model_checkpoint_timestamps: 1588581900.4357333
+all_model_checkpoint_timestamps: 1588584383.1150765
+all_model_checkpoint_timestamps: 1588586866.352511
+last_preserved_timestamp: 1588574429.584192
