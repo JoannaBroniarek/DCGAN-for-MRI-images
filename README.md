@@ -6,7 +6,7 @@ The idea was to implement and train DCGAN model on the 3D MRI images from  BRATS
 
 # Demo
 
-To see a short explanation of the implementation as well as to generate new images, please see the [demo notebook](demo.ipynb) 
+To see a short explanation of the implementation as well as to generate new images, please see the [demo notebook](https://github.com/JoannaBroniarek/DCGAN-for-MRI-images/blob/master/Demo.ipynb) 
 
 ## Repository Content
 
